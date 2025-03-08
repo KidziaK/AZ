@@ -10,7 +10,8 @@ from typing import Tuple, Set
 from numpy.typing import NDArray
 from dataclasses import dataclass
 from pathlib import Path
-from naive import naive_2d
+
+from .naive import naive_2d
 
 @dataclass
 class TestCase:
@@ -27,6 +28,7 @@ class TestCase:
         }
 
         json_str = json.dumps(data, indent=4)
+        json_str = json_str.replace(",\n           ", ",")
         Path(f"{filename}.json").write_text(json_str)
 
 
