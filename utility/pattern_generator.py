@@ -20,7 +20,7 @@ class TestCase:
     pattern: NDArray[np.uint8]
     solutions: Set[Tuple[int, int]]
 
-    def save(self, filename: str):
+    def save(self, path: Path) -> None:
         data = {
             "array": self.text_array.tolist(),
             "pattern": self.pattern.tolist(),
@@ -28,8 +28,7 @@ class TestCase:
         }
 
         json_str = json.dumps(data, indent=4)
-        json_str = json_str.replace(",\n           ", ",")
-        Path(f"{filename}.json").write_text(json_str)
+        path.write_text(json_str)
 
 
 def random_2d_pattern_with_solution_simple(array_size: int, pattern_size: int, seed: int|None = None) -> TestCase:
