@@ -125,7 +125,7 @@ std::vector<std::pair<int, int>> PATTERN_2D_KMP_AC(
     std::vector<int> match_length(n2 - m2 + 1, 0);
     std::vector<std::pair<int, int>> results;
 
-    auto t_start = std::chrono::high_resolution_clock::now();
+    // auto t_start = std::chrono::high_resolution_clock::now();
     std::vector<int> matched_row_indices;
     for (int i = 0; i < n1; ++i) {
         int current_state_idx = 0;
@@ -158,10 +158,10 @@ std::vector<std::pair<int, int>> PATTERN_2D_KMP_AC(
             }
         }
     }
-    auto t_end = std::chrono::high_resolution_clock::now();
-    std::cout << "Segment name took "
-              << std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count()
-              << " ms\n";
+    // auto t_end = std::chrono::high_resolution_clock::now();
+    // std::cout << "Segment name took "
+    //           << std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count()
+    //           << " ms\n";
     return results;
 }
 
