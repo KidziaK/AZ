@@ -1,19 +1,34 @@
 #include <iostream>
-#include <fstream>
-#include <nlohmann/json.hpp>
+#include <vector>
 #include "naive.h"
 
-using json = nlohmann::json;
-
 int main() {
-    std::ifstream f("../../test_cases/2_100_0.json");
-    json j = json::parse(f);
+    int ph, pw, th, tw;
+    std::cin >> ph >> pw >> th >> tw;
+    std::cin.ignore(); // skip to next line
 
-    auto input_array = j["array"].get<Matrix<char>>();
-    auto pattern = j["pattern"].get<Matrix<char>>();
-    auto solutions = j["solutions"].get<SolutionSet>();
+    Matrix<char> pattern(ph, std::vector<char>(pw));
+    for (int i = 0; i < ph; ++i) {
+        std::string line;
+        std::getline(std::cin, line);
+        for (int j = 0; j < pw; ++j) {
+            pattern[i][j] = line[j];
+        }
+    }
+
+    Matrix<char> input_array(th, std::vector<char>(tw));
+    for (int i = 0; i < th; ++i) {
+        std::string line;
+        std::getline(std::cin, line);
+        for (int j = 0; j < tw; ++j) {
+            input_array[i][j] = line[j];
+        }
+    }
 
     auto result = solve_2d_naive(input_array, pattern);
 
-    std::cout << (result == solutions) << std::endl;
+    for (const auto& [row, col] : result) {
+        std::cout << row << " " << col << std::endl;
+    }
+    return 0;
 }
