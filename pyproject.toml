@@ -5,6 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "great-tables>=0.17.0",
+    "jinja2>=3.1.6",
+    "matplotlib>=3.10.3",
     "numpy>=2.2.3",
+    "pandas>=2.2.3",
     "pytest>=8.3.5",
 ]

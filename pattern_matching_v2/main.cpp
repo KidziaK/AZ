@@ -134,40 +134,48 @@ std::vector<std::pair<int, int>> PATTERN_2D_KMP_AC(
     PRE_KMP_2D(P, m1, next_row);
 
     std::vector<int> match_length(n2 - m2 + 1, 0);
-
     std::vector<std::pair<int, int>> results;
 
+    std::vector<int> current_row_match_length(n2 - m2 + 1);
+
     for (int i = 0; i < n1; ++i) {
-        int current_state_idx = 0;
+        std::fill(current_row_match_length.begin(), current_row_match_length.end(), 0);
+        int current_ac_state_for_row_i = 0;
 
         for (int j = 0; j < n2; ++j) {
-            current_state_idx = get_next_state(current_state_idx, T[i][j]);
+            current_ac_state_for_row_i = get_next_state(current_ac_state_for_row_i, T[i][j]);
+            std::vector<int> matched_row_indices = get_matched_indices(current_ac_state_for_row_i);
 
-            std::vector<int> matched_row_indices = get_matched_indices(current_state_idx);
+            if (matched_row_indices.empty()) {
+                continue;
+            }
 
-            for (int k : matched_row_indices) {
-                int c_0based = j - m2 + 1;
+            int c_0based = j - m2 + 1;
 
-                if (c_0based >= 0 && c_0based < match_length.size()) {
-                    int L_current = match_length[c_0based];
+            if (c_0based < 0 || c_0based >= match_length.size()) {
+                continue;
+            }
 
-                    while (L_current > 0 && pattern_rows_global[k] != pattern_rows_global[L_current]) {
-                        L_current = next_row[L_current - 1];
-                    }
+            int k_representative = matched_row_indices[0];
 
-                    if (pattern_rows_global[k] == pattern_rows_global[L_current]) {
-                         L_current++;
-                    }
+            int L_val = match_length[c_0based];
 
-                    match_length[c_0based] = L_current;
+            while (L_val > 0 && pattern_rows_global[k_representative] != pattern_rows_global[L_val]) {
+                L_val = next_row[L_val - 1];
+            }
+            if (pattern_rows_global[k_representative] == pattern_rows_global[L_val]) {
+                L_val++;
+            }
 
-                    if (match_length[c_0based] == m1) {
-                        results.push_back({i - m1 + 1, c_0based + 1});
-                        match_length[c_0based] = next_row[m1 - 1];
-                    }
-                }
+            current_row_match_length[c_0based] = L_val;
+
+            if (current_row_match_length[c_0based] == m1) {
+                results.push_back({i - m1 + 1, c_0based + 1});
+                current_row_match_length[c_0based] = next_row[m1 - 1];
             }
         }
+
+        match_length = current_row_match_length;
     }
 
     return results;
@@ -215,7 +223,7 @@ int main(int argc, char* argv[]) {
     output_file << occurrences.size() << "\n";
 
     for (const auto& p : occurrences) {
-        output_file << p.first + 1 << " " << p.second + 1<< "\n";
+        output_file << p.first + 1 << " " << p.second << "\n";
     }
 
     output_file.close();
