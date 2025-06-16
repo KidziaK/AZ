@@ -1,9 +1,9 @@
 #!/bin/bash
 
 N=${1:-10}  # Number of tests, default 10
-GENERATOR=./test_case_generator
-BRUTE=./pattern_matching_bruteforce
-FAST=./pattern_matching
+GENERATOR=./test_case_generator.exe
+BRUTE=./pattern_matching_bruteforce.exe
+FAST=./pattern_matching.exe
 
 for i in $(seq 1 $N); do
     INPUT="test_input.txt"
